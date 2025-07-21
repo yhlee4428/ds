@@ -1,0 +1,14 @@
+<script>
+// 맨 위로 버튼 간단 수정
+document.addEventListener('DOMContentLoaded', function() {
+    var topButton = document.querySelector('a[href="#doz_header"]');
+    
+    if (topButton) {
+        topButton.onclick = function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return false;
+        };
+    }
+});
+</script>
