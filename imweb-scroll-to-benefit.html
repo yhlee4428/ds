@@ -1,0 +1,421 @@
+<style>
+.imweb-benefit-btn-container {
+    position: fixed !important;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999999 !important;
+    pointer-events: none;
+}
+
+.imweb-benefit-btn {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #FF6B35, #F7931E) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4) !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    color: #ffffff !important;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    border: none !important;
+    outline: none !important;
+    pointer-events: auto !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    opacity: 0;
+    transform: translateY(100px) scale(0.8);
+    line-height: 1.2 !important;
+}
+
+.imweb-benefit-btn:hover {
+    transform: translateY(-10px) scale(1.08) !important;
+    box-shadow: 0 20px 50px rgba(255, 107, 53, 0.6) !important;
+    background: linear-gradient(135deg, #FF5722, #E65100) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.imweb-benefit-btn:active {
+    transform: translateY(-5px) scale(1.02) !important;
+    transition: all 0.1s ease !important;
+}
+
+.imweb-benefit-btn:focus,
+.imweb-benefit-btn:visited {
+    outline: none !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.imweb-benefit-icon {
+    font-size: 32px !important;
+    margin-bottom: 4px !important;
+    display: block !important;
+    line-height: 1 !important;
+    animation: benefit-bounce 2s ease-in-out infinite !important;
+}
+
+.imweb-benefit-text {
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+    margin-top: 2px !important;
+    color: #ffffff !important;
+    display: block !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
+}
+
+.imweb-benefit-btn.loaded {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.imweb-benefit-btn.pulse-glow {
+    animation: benefit-pulse-glow 2.5s ease-in-out infinite !important;
+}
+
+@keyframes benefit-bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) !important;
+    }
+    40% {
+        transform: translateY(-8px) !important;
+    }
+    60% {
+        transform: translateY(-4px) !important;
+    }
+}
+
+@keyframes benefit-pulse-glow {
+    0%, 100% { 
+        box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4), 0 0 0 0 rgba(255, 107, 53, 0.8) !important; 
+    }
+    50% { 
+        box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6), 0 0 0 20px rgba(255, 107, 53, 0) !important; 
+    }
+}
+
+@keyframes benefit-shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+.imweb-benefit-btn.shake-attention {
+    animation: benefit-shake 0.6s ease-in-out !important;
+}
+
+@media screen and (max-width: 768px) {
+    .imweb-benefit-btn-container {
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+    
+    .imweb-benefit-btn {
+        width: 80px !important;
+        height: 80px !important;
+        border-radius: 18px !important;
+        font-size: 12px !important;
+    }
+
+    .imweb-benefit-icon {
+        font-size: 28px !important;
+        margin-bottom: 2px !important;
+    }
+
+    .imweb-benefit-text {
+        font-size: 10px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .imweb-benefit-btn-container {
+        bottom: 12px !important;
+        right: 12px !important;
+    }
+    
+    .imweb-benefit-btn {
+        width: 75px !important;
+        height: 75px !important;
+        border-radius: 16px !important;
+    }
+
+    .imweb-benefit-icon {
+        font-size: 26px !important;
+    }
+
+    .imweb-benefit-text {
+        font-size: 9px !important;
+    }
+}
+</style>
+
+<div class="imweb-benefit-btn-container">
+    <a href="javascript:void(0)" class="imweb-benefit-btn" id="imwebBenefitBtn" onclick="scrollToBenefitSection(event)">
+        <span class="imweb-benefit-icon">🎁</span>
+        <span class="imweb-benefit-text">무료혜택<br>신청하기</span>
+    </a>
+</div>
+
+<script>
+var BENEFIT_SCROLL_CONFIG = {
+    targetSelectors: [
+        '[id*="benefit"]',
+        '[class*="benefit"]',
+        '[id*="신청"]',
+        '[class*="신청"]',
+        '[id*="혜택"]',
+        '[class*="혜택"]',
+        'button[onclick*="신청"]',
+        'a[href*="신청"]',
+        '.btn:contains("신청")',
+        '.button:contains("신청")',
+        'form[action*="submit"]',
+        'form[action*="apply"]',
+        '#contact',
+        '#apply',
+        '#submit',
+        '.contact-form',
+        '.apply-form',
+        '.signup-form'
+    ],
+    fallbackSelectors: [
+        'footer',
+        '.footer',
+        '#footer',
+        '.bottom',
+        '.last-section',
+        'body > div:last-child',
+        'main > div:last-child',
+        '.container:last-child'
+    ],
+    showAfterScroll: 100,
+    pulseInterval: 8000,
+    shakeOnNoTarget: true
+};
+
+function scrollToBenefitSection(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    var config = BENEFIT_SCROLL_CONFIG;
+    var targetElement = null;
+    
+    // 1단계: 우선순위 선택자로 찾기
+    for (var i = 0; i < config.targetSelectors.length; i++) {
+        var selector = config.targetSelectors[i];
+        try {
+            var elements = document.querySelectorAll(selector);
+            if (elements.length > 0) {
+                // 가장 아래쪽에 있는 요소 선택
+                targetElement = elements[elements.length - 1];
+                break;
+            }
+        } catch(e) {
+            continue;
+        }
+    }
+    
+    // 2단계: 대체 선택자로 찾기
+    if (!targetElement) {
+        for (var i = 0; i < config.fallbackSelectors.length; i++) {
+            var selector = config.fallbackSelectors[i];
+            try {
+                var element = document.querySelector(selector);
+                if (element) {
+                    targetElement = element;
+                    break;
+                }
+            } catch(e) {
+                continue;
+            }
+        }
+    }
+    
+    // 3단계: 텍스트 기반 검색
+    if (!targetElement) {
+        var searchTexts = ['무료', '혜택', '신청', '등록', '가입', '문의', '상담', 'submit', 'apply', 'contact'];
+        for (var i = 0; i < searchTexts.length; i++) {
+            var text = searchTexts[i];
+            var elements = document.querySelectorAll('*');
+            for (var j = elements.length - 1; j >= 0; j--) {
+                var element = elements[j];
+                if (element.textContent && element.textContent.toLowerCase().includes(text)) {
+                    // 버튼이나 링크 우선
+                    if (element.tagName === 'BUTTON' || element.tagName === 'A' || 
+                        element.className.includes('btn') || element.className.includes('button')) {
+                        targetElement = element;
+                        break;
+                    }
+                }
+            }
+            if (targetElement) break;
+        }
+    }
+    
+    // 4단계: 페이지 맨 아래로
+    if (!targetElement) {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
+        
+        if (config.shakeOnNoTarget) {
+            var btn = document.getElementById('imwebBenefitBtn');
+            if (btn) {
+                btn.classList.add('shake-attention');
+                setTimeout(function() {
+                    btn.classList.remove('shake-attention');
+                }, 600);
+            }
+        }
+        
+        // Google Analytics 이벤트
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'scroll_to_bottom', {
+                'event_category': 'floating_button',
+                'event_label': 'no_target_found'
+            });
+        }
+        return;
+    }
+    
+    // 타겟 요소로 스크롤
+    var elementTop = targetElement.offsetTop;
+    var elementHeight = targetElement.offsetHeight;
+    var windowHeight = window.innerHeight;
+    
+    // 요소를 화면 중앙에 위치시키기 위한 계산
+    var scrollToPosition = elementTop - (windowHeight / 2) + (elementHeight / 2);
+    
+    // 최소값 보정 (페이지 상단을 넘지 않도록)
+    scrollToPosition = Math.max(0, scrollToPosition);
+    
+    window.scrollTo({
+        top: scrollToPosition,
+        behavior: 'smooth'
+    });
+    
+    // 타겟 요소 강조 효과
+    if (targetElement) {
+        var originalOutline = targetElement.style.outline;
+        var originalBoxShadow = targetElement.style.boxShadow;
+        
+        targetElement.style.outline = '3px solid #FF6B35';
+        targetElement.style.boxShadow = '0 0 20px rgba(255, 107, 53, 0.5)';
+        
+        setTimeout(function() {
+            if (targetElement) {
+                targetElement.style.outline = originalOutline;
+                targetElement.style.boxShadow = originalBoxShadow;
+            }
+        }, 2000);
+    }
+    
+    // Google Analytics 이벤트
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'scroll_to_benefit', {
+            'event_category': 'floating_button',
+            'event_label': targetElement ? targetElement.tagName.toLowerCase() : 'unknown'
+        });
+    }
+}
+
+(function() {
+    var button = null;
+    var scrollTimer = null;
+    var pulseTimer = null;
+    var config = BENEFIT_SCROLL_CONFIG;
+    
+    function initializeBenefitButton() {
+        button = document.getElementById('imwebBenefitBtn');
+        if (!button) return;
+        
+        // 초기 로딩 애니메이션
+        setTimeout(function() {
+            if (button) {
+                button.classList.add('loaded');
+            }
+        }, 500);
+        
+        // 초기에는 숨김
+        if (config.showAfterScroll > 0) {
+            button.style.opacity = '0';
+            button.style.pointerEvents = 'none';
+        }
+        
+        // 주기적 펄스 효과
+        if (config.pulseInterval > 0) {
+            pulseTimer = setInterval(function() {
+                if (button && window.pageYOffset > config.showAfterScroll) {
+                    button.classList.add('pulse-glow');
+                    setTimeout(function() {
+                        if (button) {
+                            button.classList.remove('pulse-glow');
+                        }
+                    }, 2500);
+                }
+            }, config.pulseInterval);
+        }
+    }
+    
+    function handleScroll() {
+        if (!button) return;
+        
+        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // 스크롤 위치에 따른 버튼 표시/숨김
+        if (scrollY > config.showAfterScroll) {
+            button.style.opacity = '1';
+            button.style.pointerEvents = 'auto';
+            button.classList.add('loaded');
+        } else {
+            button.style.opacity = '0';
+            button.style.pointerEvents = 'none';
+        }
+        
+        // 스크롤 중 펄스 효과
+        clearTimeout(scrollTimer);
+        button.classList.add('pulse-glow');
+        scrollTimer = setTimeout(function() {
+            if (button) {
+                button.classList.remove('pulse-glow');
+            }
+        }, 1000);
+    }
+    
+    function handleResize() {
+        // 필요시 반응형 처리
+    }
+    
+    // 초기화
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeBenefitButton);
+    } else {
+        initializeBenefitButton();
+    }
+    
+    // 이벤트 리스너
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
+    
+    // 페이지 언로드 시 타이머 정리
+    window.addEventListener('beforeunload', function() {
+        if (pulseTimer) {
+            clearInterval(pulseTimer);
+        }
+        if (scrollTimer) {
+            clearTimeout(scrollTimer);
+        }
+    });
+})();
+</script>
