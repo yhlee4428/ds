@@ -23,6 +23,13 @@
     text-align: center !important;
     border: none !important;
     outline: none !important;
+    pointer-events: auto !important;
+    -webkit-tap-highlight-color: rgba(255, 107, 53, 0.3) !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
 }
 
 .contact-btn:hover {
@@ -77,9 +84,9 @@
 }
 </style>
 
-<div class="contact-btn" onclick="findAndScrollToContact()">
-    <div class="contact-icon">📞</div>
-    <div class="contact-text">문의하기<br>바로가기</div>
+<div class="contact-btn" onclick="findAndScrollToContact(); return false;">
+    <div class="contact-icon">🎁</div>
+    <div class="contact-text">무료혜택<br>신청하기</div>
 </div>
 
 <script>
@@ -152,8 +159,39 @@ function findAndScrollToContact() {
     }, 200);
 }
 
-// 페이지 로드 완료 후 버튼 표시
+// 페이지 로드 완료 후 이벤트 등록
 document.addEventListener('DOMContentLoaded', function() {
     console.log('페이지 로드 완료'); // 디버깅용
+    
+    // 버튼에 클릭 이벤트 등록 (onclick 외에 추가로)
+    var btn = document.querySelector('.contact-btn');
+    if (btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('addEventListener로 클릭 감지!');
+            findAndScrollToContact();
+        });
+        
+        // 터치 이벤트도 추가 (모바일용)
+        btn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            console.log('터치 이벤트 감지!');
+            findAndScrollToContact();
+        });
+    }
+});
+
+// 추가 안전장치: 윈도우 로드 후에도 이벤트 등록
+window.addEventListener('load', function() {
+    var btn = document.querySelector('.contact-btn');
+    if (btn && !btn.hasAttribute('data-event-added')) {
+        btn.setAttribute('data-event-added', 'true');
+        btn.onclick = function() {
+            console.log('onclick 직접 등록으로 클릭 감지!');
+            findAndScrollToContact();
+            return false;
+        };
+    }
 });
 </script>
