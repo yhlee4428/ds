@@ -93,47 +93,72 @@
 function findAndScrollToContact() {
     console.log('버튼 클릭됨!'); // 디버깅용
     
-    // 1단계: "문의하기" 텍스트 찾기
+    var targetElement = null;
     var found = false;
-    var elements = document.querySelectorAll('*');
     
-    for (var i = elements.length - 1; i >= 0; i--) {
-        var element = elements[i];
-        var text = element.textContent || element.innerText || '';
-        
-        if (text.indexOf('문의하기') !== -1 || text.indexOf('문의') !== -1) {
-            console.log('문의하기 찾음:', element); // 디버깅용
-            element.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'center' 
-            });
-            
-            // 강조 효과
-            element.style.border = '3px solid #FF6B35';
-            setTimeout(function() {
-                element.style.border = '';
-            }, 3000);
-            
+    // 방법 1: 정확한 "문의하기" 텍스트 찾기
+    var textNodes = [];
+    function getTextNodes(node) {
+        if (node.nodeType === 3) { // 텍스트 노드
+            textNodes.push(node);
+        } else {
+            for (var i = 0; i < node.childNodes.length; i++) {
+                getTextNodes(node.childNodes[i]);
+            }
+        }
+    }
+    
+    getTextNodes(document.body);
+    console.log('전체 텍스트 노드 개수:', textNodes.length);
+    
+    // 텍스트 노드에서 "문의하기" 찾기
+    for (var i = textNodes.length - 1; i >= 0; i--) {
+        var textContent = textNodes[i].textContent || textNodes[i].nodeValue || '';
+        if (textContent.includes('문의하기') || textContent.includes('문의')) {
+            targetElement = textNodes[i].parentElement;
+            console.log('문의하기 텍스트 찾음:', textContent, targetElement);
             found = true;
             break;
         }
     }
     
-    // 2단계: "문의하기"를 못 찾으면 다른 키워드로 찾기
+    // 방법 2: DOM 요소에서 "문의하기" 찾기
     if (!found) {
-        var keywords = ['신청', '혜택', '무료', '등록', '가입', 'contact', 'apply'];
+        var allElements = document.getElementsByTagName('*');
+        console.log('전체 요소 개수:', allElements.length);
+        
+        for (var i = allElements.length - 1; i >= 0; i--) {
+            var element = allElements[i];
+            var textContent = element.textContent || element.innerText || '';
+            
+            // 정확한 "문의하기" 매칭
+            if (textContent.includes('문의하기')) {
+                // 자식 요소가 적은 것을 우선 (더 정확한 요소)
+                if (!targetElement || element.children.length < targetElement.children.length) {
+                    targetElement = element;
+                    console.log('문의하기 요소 찾음:', textContent.substring(0, 50), element);
+                    found = true;
+                }
+            }
+        }
+    }
+    
+    // 방법 3: 다른 키워드로 찾기
+    if (!found) {
+        var keywords = ['문의', '신청', '혜택', '무료', '등록', '가입'];
+        console.log('다른 키워드로 검색 시작');
         
         for (var k = 0; k < keywords.length; k++) {
-            for (var i = elements.length - 1; i >= 0; i--) {
-                var element = elements[i];
-                var text = element.textContent || element.innerText || '';
+            var keyword = keywords[k];
+            var allElements = document.getElementsByTagName('*');
+            
+            for (var i = allElements.length - 1; i >= 0; i--) {
+                var element = allElements[i];
+                var textContent = element.textContent || element.innerText || '';
                 
-                if (text.toLowerCase().indexOf(keywords[k]) !== -1) {
-                    console.log('키워드 찾음:', keywords[k], element); // 디버깅용
-                    element.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
-                    });
+                if (textContent.includes(keyword)) {
+                    targetElement = element;
+                    console.log('키워드 "' + keyword + '" 찾음:', textContent.substring(0, 50), element);
                     found = true;
                     break;
                 }
@@ -142,21 +167,66 @@ function findAndScrollToContact() {
         }
     }
     
-    // 3단계: 아무것도 못 찾으면 페이지 맨 아래로
-    if (!found) {
-        console.log('페이지 맨 아래로 이동'); // 디버깅용
+    // 스크롤 실행
+    if (targetElement) {
+        console.log('스크롤 시작:', targetElement);
+        
+        // 여러 방법으로 스크롤 시도
+        try {
+            // 방법 1: scrollIntoView
+            targetElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center',
+                inline: 'nearest'
+            });
+            
+            // 방법 2: 직접 위치 계산해서 스크롤
+            setTimeout(function() {
+                var rect = targetElement.getBoundingClientRect();
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                var targetY = scrollTop + rect.top - (window.innerHeight / 2);
+                
+                window.scrollTo({
+                    top: targetY,
+                    behavior: 'smooth'
+                });
+                
+                console.log('스크롤 위치:', targetY);
+            }, 100);
+            
+        } catch (e) {
+            console.log('스크롤 에러:', e);
+            // 에러 시 기본 스크롤
+            window.scrollTo({
+                top: targetElement.offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+        
+        // 강조 효과
+        targetElement.style.outline = '3px solid #FF6B35';
+        targetElement.style.backgroundColor = 'rgba(255, 107, 53, 0.1)';
+        setTimeout(function() {
+            targetElement.style.outline = '';
+            targetElement.style.backgroundColor = '';
+        }, 3000);
+        
+    } else {
+        console.log('타겟을 못 찾음 - 페이지 맨 아래로 이동');
         window.scrollTo({
-            top: document.body.scrollHeight,
+            top: document.body.scrollHeight - window.innerHeight,
             behavior: 'smooth'
         });
     }
     
     // 버튼 클릭 피드백
     var btn = document.querySelector('.contact-btn');
-    btn.style.transform = 'scale(0.9)';
-    setTimeout(function() {
-        btn.style.transform = '';
-    }, 200);
+    if (btn) {
+        btn.style.transform = 'scale(0.9)';
+        setTimeout(function() {
+            btn.style.transform = '';
+        }, 200);
+    }
 }
 
 // 페이지 로드 완료 후 이벤트 등록
