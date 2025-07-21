@@ -104,19 +104,52 @@
 
 <script>
 function goToBenefit() {
-    // 페이지 맨 아래로 스크롤 (무료 혜택 신청 버튼이 있는 곳)
-    var pageHeight = Math.max(
-        document.body.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.clientHeight,
-        document.documentElement.scrollHeight,
-        document.documentElement.offsetHeight
-    );
+    // "문의하기" 텍스트가 있는 요소 찾기
+    var target = null;
+    var allElements = document.querySelectorAll('*');
     
-    window.scrollTo({
-        top: pageHeight,
-        behavior: 'smooth'
-    });
+    // 모든 요소를 뒤에서부터 검색해서 가장 아래쪽 "문의하기" 찾기
+    for (var i = allElements.length - 1; i >= 0; i--) {
+        var element = allElements[i];
+        if (element.textContent && element.textContent.includes('문의하기')) {
+            target = element;
+            break;
+        }
+    }
+    
+    // "문의하기"를 못 찾으면 페이지 맨 아래로
+    if (!target) {
+        var pageHeight = Math.max(
+            document.body.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.clientHeight,
+            document.documentElement.scrollHeight,
+            document.documentElement.offsetHeight
+        );
+        
+        window.scrollTo({
+            top: pageHeight,
+            behavior: 'smooth'
+        });
+    } else {
+        // "문의하기" 요소로 스크롤
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+        
+        // 찾은 요소 강조 효과 (2초간)
+        var originalOutline = target.style.outline;
+        var originalBoxShadow = target.style.boxShadow;
+        
+        target.style.outline = '3px solid #FF6B35';
+        target.style.boxShadow = '0 0 20px rgba(255, 107, 53, 0.5)';
+        
+        setTimeout(function() {
+            target.style.outline = originalOutline;
+            target.style.boxShadow = originalBoxShadow;
+        }, 2000);
+    }
     
     // 버튼 클릭 효과
     var btn = document.getElementById('benefitButton');
