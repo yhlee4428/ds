@@ -96,59 +96,77 @@ function findAndScrollToContact() {
     var targetElement = null;
     var found = false;
     
-    // 방법 1: "무료 혜택 신청" 버튼 찾기 (정확한 매칭)
+    // 방법 1: 이름, 연락처 입력 폼 찾기 (가장 우선)
     var allElements = document.getElementsByTagName('*');
     console.log('전체 요소 개수:', allElements.length);
     
-    // 버튼이나 링크 요소 중에서 "무료 혜택 신청" 텍스트 포함하는 것 찾기
-    for (var i = allElements.length - 1; i >= 0; i--) {
-        var element = allElements[i];
-        var textContent = element.textContent || element.innerText || '';
-        var tagName = element.tagName.toLowerCase();
+    // 이름, 연락처 등 입력 필드가 있는 폼 찾기
+    var inputElements = document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"], input[placeholder*="이름"], input[placeholder*="연락"], input[placeholder*="전화"], textarea');
+    
+    if (inputElements.length > 0) {
+        // 가장 아래쪽에 있는 입력 필드의 부모 폼 찾기
+        var lastInput = inputElements[inputElements.length - 1];
         
-        // 버튼, 링크, 폼 요소 중에서 "무료 혜택 신청" 또는 "무료혜택신청" 찾기
-        if ((tagName === 'button' || tagName === 'a' || tagName === 'input' || element.onclick || 
-             element.className.includes('btn') || element.className.includes('button')) &&
-            (textContent.includes('무료 혜택 신청') || textContent.includes('무료혜택신청') || 
-             textContent.includes('무료혜택') || textContent.includes('혜택신청'))) {
-            targetElement = element;
-            console.log('무료 혜택 신청 버튼 찾음:', textContent.trim(), element);
+        // 입력 필드의 부모 폼이나 섹션 찾기
+        var parentForm = lastInput.closest('form');
+        if (parentForm) {
+            targetElement = parentForm;
+            console.log('입력 폼 찾음:', parentForm);
             found = true;
-            break;
+        } else {
+            // 폼이 없으면 입력 필드가 있는 섹션 찾기
+            var parentSection = lastInput.closest('section, div, .contact, .form, .inquiry');
+            if (parentSection) {
+                targetElement = parentSection;
+                console.log('입력 섹션 찾음:', parentSection);
+                found = true;
+            } else {
+                targetElement = lastInput;
+                console.log('입력 필드 찾음:', lastInput);
+                found = true;
+            }
         }
     }
     
-    // 방법 2: 폼이나 문의 섹션 찾기
+    // 방법 2: "문의하기" 제목이 있는 섹션 찾기
     if (!found) {
-        console.log('폼이나 문의 섹션 찾기 시작');
+        console.log('문의하기 제목 섹션 찾기');
         
         for (var i = allElements.length - 1; i >= 0; i--) {
             var element = allElements[i];
             var textContent = element.textContent || element.innerText || '';
             var tagName = element.tagName.toLowerCase();
             
-            // 폼 요소나 문의 관련 텍스트가 있는 섹션 찾기
-            if (tagName === 'form' || textContent.includes('문의하기') || 
-                textContent.includes('신청하기') || textContent.includes('연락처')) {
+            // "문의하기" 제목을 가진 요소 찾기 (h1, h2, h3 등)
+            if ((tagName.match(/^h[1-6]$/) || element.className.includes('title') || element.className.includes('heading')) &&
+                textContent.includes('문의하기')) {
                 targetElement = element;
-                console.log('폼/문의 섹션 찾음:', textContent.substring(0, 50), element);
+                console.log('문의하기 제목 찾음:', textContent.trim(), element);
                 found = true;
                 break;
             }
         }
     }
     
-    // 방법 3: 페이지 하단 영역 찾기
+    // 방법 3: 폼이나 연락처 관련 섹션 찾기
     if (!found) {
-        console.log('페이지 하단 영역 찾기');
+        console.log('폼이나 연락처 섹션 찾기');
         
-        // footer나 하단 섹션 찾기
-        var footerElements = document.querySelectorAll('footer, .footer, #footer, section:last-child, .contact, .apply');
-        
-        if (footerElements.length > 0) {
-            targetElement = footerElements[footerElements.length - 1];
-            console.log('하단 섹션 찾음:', targetElement);
-            found = true;
+        for (var i = allElements.length - 1; i >= 0; i--) {
+            var element = allElements[i];
+            var textContent = element.textContent || element.innerText || '';
+            var tagName = element.tagName.toLowerCase();
+            
+            // 폼이나 연락처 관련 텍스트가 있는 요소 찾기
+            if (tagName === 'form' || 
+                textContent.includes('연락처') || textContent.includes('이름') ||
+                textContent.includes('연락 희망 시간') || textContent.includes('문의') ||
+                element.className.includes('contact') || element.className.includes('form')) {
+                targetElement = element;
+                console.log('연락처/폼 섹션 찾음:', textContent.substring(0, 30), element);
+                found = true;
+                break;
+            }
         }
     }
     
