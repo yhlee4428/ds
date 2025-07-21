@@ -1,0 +1,159 @@
+<style>
+.contact-btn {
+    position: fixed !important;
+    bottom: 20px;
+    right: 20px;
+    width: 85px;
+    height: 85px;
+    background: linear-gradient(135deg, #FF6B35, #F7931E) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4) !important;
+    cursor: pointer !important;
+    z-index: 999999 !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    color: #ffffff !important;
+    font-family: 'Noto Sans KR', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.contact-btn:hover {
+    transform: translateY(-5px) scale(1.05) !important;
+    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6) !important;
+    background: linear-gradient(135deg, #FF5722, #E65100) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.contact-btn:focus,
+.contact-btn:visited {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    outline: none !important;
+}
+
+.contact-icon {
+    font-size: 28px !important;
+    margin-bottom: 3px !important;
+    animation: bounce-icon 2s infinite !important;
+}
+
+.contact-text {
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+@keyframes bounce-icon {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+    60% { transform: translateY(-3px); }
+}
+
+@media (max-width: 768px) {
+    .contact-btn {
+        width: 75px !important;
+        height: 75px !important;
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+    
+    .contact-icon {
+        font-size: 24px !important;
+    }
+    
+    .contact-text {
+        font-size: 10px !important;
+    }
+}
+</style>
+
+<div class="contact-btn" onclick="findAndScrollToContact()">
+    <div class="contact-icon">📞</div>
+    <div class="contact-text">문의하기<br>바로가기</div>
+</div>
+
+<script>
+function findAndScrollToContact() {
+    console.log('버튼 클릭됨!'); // 디버깅용
+    
+    // 1단계: "문의하기" 텍스트 찾기
+    var found = false;
+    var elements = document.querySelectorAll('*');
+    
+    for (var i = elements.length - 1; i >= 0; i--) {
+        var element = elements[i];
+        var text = element.textContent || element.innerText || '';
+        
+        if (text.indexOf('문의하기') !== -1 || text.indexOf('문의') !== -1) {
+            console.log('문의하기 찾음:', element); // 디버깅용
+            element.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+            
+            // 강조 효과
+            element.style.border = '3px solid #FF6B35';
+            setTimeout(function() {
+                element.style.border = '';
+            }, 3000);
+            
+            found = true;
+            break;
+        }
+    }
+    
+    // 2단계: "문의하기"를 못 찾으면 다른 키워드로 찾기
+    if (!found) {
+        var keywords = ['신청', '혜택', '무료', '등록', '가입', 'contact', 'apply'];
+        
+        for (var k = 0; k < keywords.length; k++) {
+            for (var i = elements.length - 1; i >= 0; i--) {
+                var element = elements[i];
+                var text = element.textContent || element.innerText || '';
+                
+                if (text.toLowerCase().indexOf(keywords[k]) !== -1) {
+                    console.log('키워드 찾음:', keywords[k], element); // 디버깅용
+                    element.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+    }
+    
+    // 3단계: 아무것도 못 찾으면 페이지 맨 아래로
+    if (!found) {
+        console.log('페이지 맨 아래로 이동'); // 디버깅용
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
+    }
+    
+    // 버튼 클릭 피드백
+    var btn = document.querySelector('.contact-btn');
+    btn.style.transform = 'scale(0.9)';
+    setTimeout(function() {
+        btn.style.transform = '';
+    }, 200);
+}
+
+// 페이지 로드 완료 후 버튼 표시
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('페이지 로드 완료'); // 디버깅용
+});
+</script>
