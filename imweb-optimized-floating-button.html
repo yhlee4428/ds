@@ -1,0 +1,174 @@
+<style>
+.imweb-float-btn-container {
+    position: fixed !important;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999999 !important;
+    pointer-events: none;
+}
+
+.imweb-float-btn {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #4A90E2, #357ABD) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3) !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    color: #ffffff !important;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    border: none !important;
+    outline: none !important;
+    pointer-events: auto !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+}
+
+.imweb-float-btn:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 12px 35px rgba(74, 144, 226, 0.4) !important;
+    background: linear-gradient(135deg, #357ABD, #2E6BA8) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.imweb-float-btn:active {
+    transform: translateY(-2px) !important;
+}
+
+.imweb-float-btn:focus {
+    outline: none !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.imweb-float-btn:visited {
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.imweb-float-btn::before {
+    content: "🎯" !important;
+    font-size: 24px !important;
+    margin-bottom: 2px !important;
+    display: block !important;
+}
+
+.imweb-float-btn-text {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    margin-top: 2px !important;
+    color: #ffffff !important;
+    display: block !important;
+}
+
+@media screen and (max-width: 768px) {
+    .imweb-float-btn-container {
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+    
+    .imweb-float-btn {
+        width: 70px !important;
+        height: 70px !important;
+        border-radius: 15px !important;
+        font-size: 11px !important;
+    }
+
+    .imweb-float-btn::before {
+        font-size: 20px !important;
+    }
+
+    .imweb-float-btn-text {
+        font-size: 9px !important;
+    }
+}
+
+@keyframes imweb-btn-pulse {
+    0% { box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3) !important; }
+    50% { box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6) !important; }
+    100% { box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3) !important; }
+}
+
+.imweb-float-btn.pulse-effect {
+    animation: imweb-btn-pulse 2s infinite !important;
+}
+
+@keyframes imweb-btn-fadein {
+    0% { 
+        opacity: 0 !important; 
+        transform: translateY(50px) !important; 
+    }
+    100% { 
+        opacity: 1 !important; 
+        transform: translateY(0) !important; 
+    }
+}
+
+.imweb-float-btn.fade-in {
+    animation: imweb-btn-fadein 0.5s ease forwards !important;
+}
+</style>
+
+<div class="imweb-float-btn-container">
+    <a href="javascript:void(0)" class="imweb-float-btn fade-in" onclick="handleImwebFloatingBtn(event)">
+        <span class="imweb-float-btn-text">무료체험<br>신청하기</span>
+    </a>
+</div>
+
+<script>
+function handleImwebFloatingBtn(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    window.location.href = '/contact';
+}
+
+(function() {
+    var scrollTimer = null;
+    var button = null;
+    
+    function initButton() {
+        button = document.querySelector('.imweb-float-btn');
+        if (!button) return;
+        
+        button.style.opacity = '0';
+        setTimeout(function() {
+            if (button) {
+                button.style.opacity = '1';
+            }
+        }, 500);
+    }
+    
+    function handleScroll() {
+        if (!button) return;
+        
+        button.classList.add('pulse-effect');
+        
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function() {
+            if (button) {
+                button.classList.remove('pulse-effect');
+            }
+        }, 1000);
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initButton);
+    } else {
+        initButton();
+    }
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+})();
+</script>
