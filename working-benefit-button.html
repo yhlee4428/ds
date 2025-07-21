@@ -96,74 +96,59 @@ function findAndScrollToContact() {
     var targetElement = null;
     var found = false;
     
-    // 방법 1: 정확한 "문의하기" 텍스트 찾기
-    var textNodes = [];
-    function getTextNodes(node) {
-        if (node.nodeType === 3) { // 텍스트 노드
-            textNodes.push(node);
-        } else {
-            for (var i = 0; i < node.childNodes.length; i++) {
-                getTextNodes(node.childNodes[i]);
-            }
-        }
-    }
+    // 방법 1: "무료 혜택 신청" 버튼 찾기 (정확한 매칭)
+    var allElements = document.getElementsByTagName('*');
+    console.log('전체 요소 개수:', allElements.length);
     
-    getTextNodes(document.body);
-    console.log('전체 텍스트 노드 개수:', textNodes.length);
-    
-    // 텍스트 노드에서 "문의하기" 찾기
-    for (var i = textNodes.length - 1; i >= 0; i--) {
-        var textContent = textNodes[i].textContent || textNodes[i].nodeValue || '';
-        if (textContent.includes('문의하기') || textContent.includes('문의')) {
-            targetElement = textNodes[i].parentElement;
-            console.log('문의하기 텍스트 찾음:', textContent, targetElement);
+    // 버튼이나 링크 요소 중에서 "무료 혜택 신청" 텍스트 포함하는 것 찾기
+    for (var i = allElements.length - 1; i >= 0; i--) {
+        var element = allElements[i];
+        var textContent = element.textContent || element.innerText || '';
+        var tagName = element.tagName.toLowerCase();
+        
+        // 버튼, 링크, 폼 요소 중에서 "무료 혜택 신청" 또는 "무료혜택신청" 찾기
+        if ((tagName === 'button' || tagName === 'a' || tagName === 'input' || element.onclick || 
+             element.className.includes('btn') || element.className.includes('button')) &&
+            (textContent.includes('무료 혜택 신청') || textContent.includes('무료혜택신청') || 
+             textContent.includes('무료혜택') || textContent.includes('혜택신청'))) {
+            targetElement = element;
+            console.log('무료 혜택 신청 버튼 찾음:', textContent.trim(), element);
             found = true;
             break;
         }
     }
     
-    // 방법 2: DOM 요소에서 "문의하기" 찾기
+    // 방법 2: 폼이나 문의 섹션 찾기
     if (!found) {
-        var allElements = document.getElementsByTagName('*');
-        console.log('전체 요소 개수:', allElements.length);
+        console.log('폼이나 문의 섹션 찾기 시작');
         
         for (var i = allElements.length - 1; i >= 0; i--) {
             var element = allElements[i];
             var textContent = element.textContent || element.innerText || '';
+            var tagName = element.tagName.toLowerCase();
             
-            // 정확한 "문의하기" 매칭
-            if (textContent.includes('문의하기')) {
-                // 자식 요소가 적은 것을 우선 (더 정확한 요소)
-                if (!targetElement || element.children.length < targetElement.children.length) {
-                    targetElement = element;
-                    console.log('문의하기 요소 찾음:', textContent.substring(0, 50), element);
-                    found = true;
-                }
+            // 폼 요소나 문의 관련 텍스트가 있는 섹션 찾기
+            if (tagName === 'form' || textContent.includes('문의하기') || 
+                textContent.includes('신청하기') || textContent.includes('연락처')) {
+                targetElement = element;
+                console.log('폼/문의 섹션 찾음:', textContent.substring(0, 50), element);
+                found = true;
+                break;
             }
         }
     }
     
-    // 방법 3: 다른 키워드로 찾기
+    // 방법 3: 페이지 하단 영역 찾기
     if (!found) {
-        var keywords = ['문의', '신청', '혜택', '무료', '등록', '가입'];
-        console.log('다른 키워드로 검색 시작');
+        console.log('페이지 하단 영역 찾기');
         
-        for (var k = 0; k < keywords.length; k++) {
-            var keyword = keywords[k];
-            var allElements = document.getElementsByTagName('*');
-            
-            for (var i = allElements.length - 1; i >= 0; i--) {
-                var element = allElements[i];
-                var textContent = element.textContent || element.innerText || '';
-                
-                if (textContent.includes(keyword)) {
-                    targetElement = element;
-                    console.log('키워드 "' + keyword + '" 찾음:', textContent.substring(0, 50), element);
-                    found = true;
-                    break;
-                }
-            }
-            if (found) break;
+        // footer나 하단 섹션 찾기
+        var footerElements = document.querySelectorAll('footer, .footer, #footer, section:last-child, .contact, .apply');
+        
+        if (footerElements.length > 0) {
+            targetElement = footerElements[footerElements.length - 1];
+            console.log('하단 섹션 찾음:', targetElement);
+            found = true;
         }
     }
     
