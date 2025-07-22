@@ -172,42 +172,54 @@ function findAndScrollToContact() {
         }
     }
     
-    // 방법 3: 문의 관련 섹션이나 폼 찾기
+    // 방법 3: 이름, 연락처, 연락 희망 시간대 입력 칸 찾기
     if (!found) {
-        console.log('문의 관련 섹션 찾기');
+        console.log('입력 칸 찾기 시작');
         
-        // 이름, 연락처 등 입력 필드가 있는 폼 찾기
-        var inputElements = document.querySelectorAll('input[type="text"], input[type="tel"], input[type="email"], input[placeholder*="이름"], input[placeholder*="연락"], input[placeholder*="전화"], textarea');
+        // 구체적인 입력 필드 찾기
+        var nameInput = document.querySelector('input[placeholder*="이름"], input[name*="name"], input[id*="name"]');
+        var phoneInput = document.querySelector('input[placeholder*="연락"], input[placeholder*="전화"], input[type="tel"], input[name*="phone"], input[id*="phone"]');
+        var timeInput = document.querySelector('input[placeholder*="시간"], input[placeholder*="희망"], input[name*="time"], input[id*="time"]');
         
-        if (inputElements.length > 0) {
-            var lastInput = inputElements[inputElements.length - 1];
+        var targetInput = nameInput || phoneInput || timeInput;
+        
+        if (targetInput) {
+            console.log('입력 칸 찾음:', targetInput.placeholder || targetInput.name || targetInput.id, targetInput);
             
-            // 입력 필드 위에 있는 "문의하기" 제목 찾기
-            var currentElement = lastInput;
-            while (currentElement && currentElement.parentElement) {
-                currentElement = currentElement.parentElement;
-                var titleElement = currentElement.querySelector('h1, h2, h3, h4, h5, h6, .title, .heading');
-                if (titleElement && titleElement.textContent.includes('문의')) {
-                    targetElement = titleElement;
-                    console.log('폼 위 문의 제목 찾음:', titleElement.textContent.trim(), titleElement);
-                    found = true;
-                    break;
-                }
-            }
+            // 입력 칸이 속한 폼이나 섹션의 시작 부분 찾기
+            var formElement = targetInput.closest('form');
+            var sectionElement = targetInput.closest('section, div[class*="contact"], div[class*="form"], div[class*="inquiry"]');
             
-            // 제목을 못 찾으면 폼 자체로 이동
-            if (!found) {
-                var parentForm = lastInput.closest('form');
-                if (parentForm) {
-                    targetElement = parentForm;
-                    console.log('입력 폼 찾음:', parentForm);
-                    found = true;
+            if (formElement) {
+                // 폼의 첫 번째 요소 찾기
+                var firstElement = formElement.querySelector('h1, h2, h3, h4, h5, h6, label, .title, .heading');
+                if (firstElement) {
+                    targetElement = firstElement;
+                    console.log('폼 시작 부분 찾음:', firstElement.textContent.trim(), firstElement);
                 } else {
-                    targetElement = lastInput;
-                    console.log('입력 필드 찾음:', lastInput);
-                    found = true;
+                    targetElement = formElement;
+                    console.log('폼 전체 사용:', formElement);
                 }
+                found = true;
+            } else if (sectionElement) {
+                // 섹션의 첫 번째 요소 찾기
+                var firstElement = sectionElement.querySelector('h1, h2, h3, h4, h5, h6, label, .title, .heading');
+                if (firstElement) {
+                    targetElement = firstElement;
+                    console.log('섹션 시작 부분 찾음:', firstElement.textContent.trim(), firstElement);
+                } else {
+                    targetElement = sectionElement;
+                    console.log('섹션 전체 사용:', sectionElement);
+                }
+                found = true;
+            } else {
+                // 입력 필드 자체 사용
+                targetElement = targetInput;
+                console.log('입력 필드 직접 사용:', targetInput);
+                found = true;
             }
+        } else {
+            console.log('입력 칸을 찾을 수 없음');
         }
     }
     
@@ -215,38 +227,40 @@ function findAndScrollToContact() {
     if (targetElement) {
         console.log('스크롤 시작:', targetElement);
         
-        // 여러 방법으로 스크롤 시도
+        // 안정적인 스크롤 방법
         try {
-            // 방법 1: scrollIntoView
-            targetElement.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'center',
-                inline: 'nearest'
-            });
+            console.log('스크롤 시작');
             
-            // 방법 2: 직접 위치 계산해서 스크롤
-            setTimeout(function() {
-                var rect = targetElement.getBoundingClientRect();
-                var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                var targetY = scrollTop + rect.top - 100; // 요소 위로 100px 여유 공간
-                
-                // 음수 방지
-                targetY = Math.max(0, targetY);
-                
-                window.scrollTo({
-                    top: targetY,
-                    behavior: 'smooth'
-                });
-                
-                console.log('스크롤 위치:', targetY);
-            }, 100);
+            // 요소의 절대 위치 계산
+            var elementTop = 0;
+            var element = targetElement;
+            
+            // 요소의 실제 top 위치 계산
+            while (element) {
+                elementTop += element.offsetTop;
+                element = element.offsetParent;
+            }
+            
+            // 스크롤 위치 계산 (요소 위로 150px 여유)
+            var scrollPosition = elementTop - 150;
+            
+            // 최소값 0, 최대값은 페이지 끝
+            scrollPosition = Math.max(0, Math.min(scrollPosition, document.body.scrollHeight - window.innerHeight));
+            
+            console.log('요소 위치:', elementTop, '스크롤 위치:', scrollPosition);
+            
+            window.scrollTo({
+                top: scrollPosition,
+                behavior: 'smooth'
+            });
             
         } catch (e) {
             console.log('스크롤 에러:', e);
-            // 에러 시 기본 스크롤
-            window.scrollTo({
-                top: targetElement.offsetTop - 100,
-                behavior: 'smooth'
+            
+            // 에러 시 간단한 scrollIntoView 사용
+            targetElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start'
             });
         }
         
