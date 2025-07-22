@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스크롤 따라다니는 고정 버튼</title>
+    <style>
+        /* 고정 버튼 스타일 */
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4A90E2, #357ABD);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+            cursor: pointer;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            border: none;
+            outline: none;
+        }
+
+        .floating-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(74, 144, 226, 0.4);
+            background: linear-gradient(135deg, #357ABD, #2E6BA8);
+            color: white;
+            text-decoration: none;
+        }
+
+        .floating-button:active {
+            transform: translateY(-2px);
+        }
+
+        /* 버튼 아이콘 */
+        .floating-button::before {
+            content: "🎯";
+            font-size: 24px;
+            margin-bottom: 2px;
+        }
+
+        /* 버튼 텍스트 */
+        .floating-button-text {
+            font-size: 10px;
+            line-height: 1.2;
+            margin-top: 2px;
+        }
+
+        /* 모바일 반응형 */
+        @media (max-width: 768px) {
+            .floating-button {
+                width: 70px;
+                height: 70px;
+                bottom: 15px;
+                right: 15px;
+                border-radius: 15px;
+                font-size: 11px;
+            }
+
+            .floating-button::before {
+                font-size: 20px;
+            }
+
+            .floating-button-text {
+                font-size: 9px;
+            }
+        }
+
+        /* 애니메이션 효과 */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6);
+            }
+            100% {
+                box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+            }
+        }
+
+        .floating-button.pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* 페이지 내용 스타일 (데모용) */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            min-height: 300px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 데모 컨텐츠 -->
+    <div class="content">
+        <h1>스크롤 따라다니는 고정 버튼 데모</h1>
+        
+        <div class="section">
+            <h2>섹션 1</h2>
+            <p>이 페이지를 스크롤해보세요. 오른쪽 하단의 버튼이 스크롤에 관계없이 항상 고정된 위치에 있는 것을 확인할 수 있습니다.</p>
+            <p>버튼은 마우스 호버 시 위로 올라가는 애니메이션 효과가 있으며, 클릭하면 원하는 동작을 수행할 수 있습니다.</p>
+        </div>
+
+        <div class="section">
+            <h2>섹션 2</h2>
+            <p>아임웹에서 이 코드를 사용하려면 다음과 같이 적용하세요:</p>
+            <p>1. 위젯 > HTML 위젯을 페이지에 추가</p>
+            <p>2. HTML 코드 편집에서 버튼 HTML과 CSS를 삽입</p>
+            <p>3. 필요에 따라 JavaScript로 추가 기능 구현</p>
+        </div>
+
+        <div class="section">
+            <h2>섹션 3</h2>
+            <p>버튼 디자인과 기능은 완전히 커스터마이징 가능합니다.</p>
+            <p>색상, 크기, 위치, 아이콘, 텍스트 등을 자유롭게 수정할 수 있습니다.</p>
+        </div>
+
+        <div class="section">
+            <h2>섹션 4</h2>
+            <p>모바일 기기에서도 최적화된 크기로 표시됩니다.</p>
+            <p>반응형 디자인이 적용되어 다양한 화면 크기에서 적절한 크기로 조정됩니다.</p>
+        </div>
+
+        <div class="section">
+            <h2>섹션 5</h2>
+            <p>더 많은 컨텐츠를 추가하여 스크롤 효과를 확인해보세요.</p>
+            <p>버튼이 항상 같은 위치에 고정되어 있는 것을 볼 수 있습니다.</p>
+        </div>
+    </div>
+
+    <!-- 스크롤 따라다니는 고정 버튼 -->
+    <a href="#" class="floating-button" onclick="handleButtonClick(event)">
+        <div class="floating-button-text">무료체험<br>신청하기</div>
+    </a>
+
+    <script>
+        // 버튼 클릭 이벤트 처리
+        function handleButtonClick(event) {
+            event.preventDefault();
+            
+            // 여기에 원하는 동작을 추가하세요
+            // 예: 팝업 창 열기, 다른 페이지로 이동, 폼 제출 등
+            
+            alert('무료체험 신청 버튼이 클릭되었습니다!');
+            
+            // 실제 사용 시에는 아래와 같이 사용할 수 있습니다:
+            // window.open('신청페이지URL', '_blank'); // 새 창에서 열기
+            // location.href = '신청페이지URL'; // 현재 창에서 이동
+            // showModal(); // 모달 창 표시
+        }
+
+        // 스크롤 시 버튼 효과 (선택사항)
+        let scrollTimer = null;
+        window.addEventListener('scroll', function() {
+            const button = document.querySelector('.floating-button');
+            
+            // 스크롤 중일 때 버튼에 펄스 효과 추가
+            button.classList.add('pulse');
+            
+            // 스크롤이 멈추면 펄스 효과 제거
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(function() {
+                button.classList.remove('pulse');
+            }, 1000);
+        });
+
+        // 페이지 로드 시 버튼 애니메이션
+        window.addEventListener('load', function() {
+            const button = document.querySelector('.floating-button');
+            button.style.opacity = '0';
+            button.style.transform = 'translateY(100px)';
+            
+            setTimeout(function() {
+                button.style.transition = 'all 0.5s ease';
+                button.style.opacity = '1';
+                button.style.transform = 'translateY(0)';
+            }, 500);
+        });
+    </script>
+</body>
+</html>

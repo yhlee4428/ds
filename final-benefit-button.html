@@ -1,0 +1,201 @@
+<style>
+.benefit-btn {
+    position: fixed !important;
+    bottom: 20px;
+    right: 20px;
+    width: 85px;
+    height: 85px;
+    background: linear-gradient(135deg, #FF6B35, #F7931E) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4) !important;
+    cursor: pointer !important;
+    z-index: 999999 !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    color: #ffffff !important;
+    font-family: 'Noto Sans KR', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    border: none !important;
+    outline: none !important;
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.benefit-btn:hover {
+    transform: translateY(-8px) scale(1.05) !important;
+    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6) !important;
+    background: linear-gradient(135deg, #FF5722, #E65100) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.benefit-btn:focus,
+.benefit-btn:visited {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    outline: none !important;
+}
+
+.benefit-btn.show {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: all 0.5s ease !important;
+}
+
+.benefit-icon {
+    font-size: 28px !important;
+    margin-bottom: 3px !important;
+    animation: bounce 2s infinite !important;
+}
+
+.benefit-text {
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+    60% { transform: translateY(-3px); }
+}
+
+.benefit-btn.pulse {
+    animation: pulse 2s infinite !important;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4), 0 0 0 0 rgba(255, 107, 53, 0.7) !important; }
+    70% { box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4), 0 0 0 15px rgba(255, 107, 53, 0) !important; }
+    100% { box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4), 0 0 0 0 rgba(255, 107, 53, 0) !important; }
+}
+
+@media (max-width: 768px) {
+    .benefit-btn {
+        width: 75px !important;
+        height: 75px !important;
+        bottom: 15px !important;
+        right: 15px !important;
+        border-radius: 18px !important;
+    }
+    
+    .benefit-icon {
+        font-size: 24px !important;
+    }
+    
+    .benefit-text {
+        font-size: 10px !important;
+    }
+}
+</style>
+
+<a href="javascript:void(0)" class="benefit-btn" onclick="goToBenefit()" id="benefitButton">
+    <span class="benefit-icon">🎁</span>
+    <span class="benefit-text">무료혜택<br>신청하기</span>
+</a>
+
+<script>
+function goToBenefit() {
+    // "문의하기" 텍스트가 있는 요소 찾기
+    var target = null;
+    var allElements = document.querySelectorAll('*');
+    
+    // 모든 요소를 뒤에서부터 검색해서 가장 아래쪽 "문의하기" 찾기
+    for (var i = allElements.length - 1; i >= 0; i--) {
+        var element = allElements[i];
+        if (element.textContent && element.textContent.includes('문의하기')) {
+            target = element;
+            break;
+        }
+    }
+    
+    // "문의하기"를 못 찾으면 페이지 맨 아래로
+    if (!target) {
+        var pageHeight = Math.max(
+            document.body.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.clientHeight,
+            document.documentElement.scrollHeight,
+            document.documentElement.offsetHeight
+        );
+        
+        window.scrollTo({
+            top: pageHeight,
+            behavior: 'smooth'
+        });
+    } else {
+        // "문의하기" 요소로 스크롤
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+        
+        // 찾은 요소 강조 효과 (2초간)
+        var originalOutline = target.style.outline;
+        var originalBoxShadow = target.style.boxShadow;
+        
+        target.style.outline = '3px solid #FF6B35';
+        target.style.boxShadow = '0 0 20px rgba(255, 107, 53, 0.5)';
+        
+        setTimeout(function() {
+            target.style.outline = originalOutline;
+            target.style.boxShadow = originalBoxShadow;
+        }, 2000);
+    }
+    
+    // 버튼 클릭 효과
+    var btn = document.getElementById('benefitButton');
+    btn.style.transform = 'scale(0.95)';
+    setTimeout(function() {
+        btn.style.transform = '';
+    }, 150);
+}
+
+// 페이지 로드되면 버튼 표시
+window.addEventListener('load', function() {
+    var btn = document.getElementById('benefitButton');
+    setTimeout(function() {
+        btn.classList.add('show');
+    }, 1000);
+});
+
+// 스크롤할 때 펄스 효과
+var scrollTimer;
+window.addEventListener('scroll', function() {
+    var btn = document.getElementById('benefitButton');
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // 150px 이상 스크롤하면 버튼 표시
+    if (scrollY > 150) {
+        btn.classList.add('show');
+    } else {
+        btn.classList.remove('show');
+    }
+    
+    // 스크롤 중 펄스 효과
+    btn.classList.add('pulse');
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function() {
+        btn.classList.remove('pulse');
+    }, 1000);
+}, { passive: true });
+
+// 8초마다 주의를 끌기 위한 펄스 효과
+setInterval(function() {
+    var btn = document.getElementById('benefitButton');
+    if (btn.classList.contains('show')) {
+        btn.classList.add('pulse');
+        setTimeout(function() {
+            btn.classList.remove('pulse');
+        }, 2000);
+    }
+}, 8000);
+</script>

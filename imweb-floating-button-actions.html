@@ -1,0 +1,279 @@
+<style>
+.imweb-float-container {
+    position: fixed !important;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999999 !important;
+    pointer-events: none;
+}
+
+.imweb-float-button {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #4A90E2, #357ABD) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3) !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    color: #ffffff !important;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    border: none !important;
+    outline: none !important;
+    pointer-events: auto !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    opacity: 0;
+    transform: translateY(100px) scale(0.8);
+}
+
+.imweb-float-button:hover {
+    transform: translateY(-8px) scale(1.05) !important;
+    box-shadow: 0 15px 40px rgba(74, 144, 226, 0.5) !important;
+    background: linear-gradient(135deg, #357ABD, #2E6BA8) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.imweb-float-button:active {
+    transform: translateY(-4px) scale(0.98) !important;
+    transition: all 0.1s ease !important;
+}
+
+.imweb-float-button:focus,
+.imweb-float-button:visited {
+    outline: none !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.imweb-float-icon {
+    font-size: 24px !important;
+    margin-bottom: 2px !important;
+    display: block !important;
+    line-height: 1 !important;
+}
+
+.imweb-float-text {
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    margin-top: 2px !important;
+    color: #ffffff !important;
+    display: block !important;
+    white-space: nowrap !important;
+}
+
+.imweb-float-button.loaded {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.imweb-float-button.pulse-active {
+    animation: imweb-pulse 2s ease-in-out infinite !important;
+}
+
+@keyframes imweb-pulse {
+    0%, 100% { 
+        box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3), 0 0 0 0 rgba(74, 144, 226, 0.7) !important; 
+    }
+    50% { 
+        box-shadow: 0 8px 25px rgba(74, 144, 226, 0.5), 0 0 0 15px rgba(74, 144, 226, 0) !important; 
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .imweb-float-container {
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+    
+    .imweb-float-button {
+        width: 70px !important;
+        height: 70px !important;
+        border-radius: 15px !important;
+    }
+
+    .imweb-float-icon {
+        font-size: 20px !important;
+    }
+
+    .imweb-float-text {
+        font-size: 9px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .imweb-float-container {
+        bottom: 12px !important;
+        right: 12px !important;
+    }
+    
+    .imweb-float-button {
+        width: 65px !important;
+        height: 65px !important;
+    }
+}
+</style>
+
+<div class="imweb-float-container">
+    <a href="javascript:void(0)" class="imweb-float-button" id="imwebFloatBtn" onclick="executeFloatingAction(event)">
+        <span class="imweb-float-icon">🎯</span>
+        <span class="imweb-float-text">무료체험<br>신청하기</span>
+    </a>
+</div>
+
+<script>
+var IMWEB_FLOAT_CONFIG = {
+    action: 'page',
+    url: '/contact',
+    phone: '010-1234-5678',
+    email: 'info@company.com',
+    scrollTarget: '#contact-section',
+    popupId: '#popup-contact',
+    newWindow: false,
+    showAfterScroll: 0,
+    pulseOnScroll: true,
+    hideOnMobile: false
+};
+
+function executeFloatingAction(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    var config = IMWEB_FLOAT_CONFIG;
+    
+    switch(config.action) {
+        case 'page':
+            if (config.newWindow) {
+                window.open(config.url, '_blank', 'noopener,noreferrer');
+            } else {
+                window.location.href = config.url;
+            }
+            break;
+            
+        case 'phone':
+            window.location.href = 'tel:' + config.phone.replace(/[^0-9+]/g, '');
+            break;
+            
+        case 'email':
+            window.location.href = 'mailto:' + config.email;
+            break;
+            
+        case 'scroll':
+            var target = document.querySelector(config.scrollTarget);
+            if (target) {
+                target.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }
+            break;
+            
+        case 'popup':
+            if (window.$ && $(config.popupId).length) {
+                $(config.popupId).modal('show');
+            } else {
+                alert('팝업을 찾을 수 없습니다.');
+            }
+            break;
+            
+        case 'custom':
+            if (typeof window.customFloatingAction === 'function') {
+                window.customFloatingAction();
+            } else {
+                console.log('customFloatingAction 함수를 정의해주세요.');
+            }
+            break;
+            
+        default:
+            alert('버튼이 클릭되었습니다!');
+    }
+    
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+            'event_category': 'floating_button',
+            'event_label': config.action
+        });
+    }
+}
+
+(function() {
+    var button = null;
+    var scrollTimer = null;
+    var config = IMWEB_FLOAT_CONFIG;
+    
+    function initializeButton() {
+        button = document.getElementById('imwebFloatBtn');
+        if (!button) return;
+        
+        if (config.hideOnMobile && window.innerWidth <= 768) {
+            button.style.display = 'none';
+            return;
+        }
+        
+        setTimeout(function() {
+            if (button) {
+                button.classList.add('loaded');
+            }
+        }, 300);
+        
+        if (config.showAfterScroll > 0) {
+            button.style.opacity = '0';
+            button.style.pointerEvents = 'none';
+        }
+    }
+    
+    function handleScroll() {
+        if (!button) return;
+        
+        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (config.showAfterScroll > 0) {
+            if (scrollY > config.showAfterScroll) {
+                button.style.opacity = '1';
+                button.style.pointerEvents = 'auto';
+            } else {
+                button.style.opacity = '0';
+                button.style.pointerEvents = 'none';
+            }
+        }
+        
+        if (config.pulseOnScroll) {
+            button.classList.add('pulse-active');
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(function() {
+                if (button) {
+                    button.classList.remove('pulse-active');
+                }
+            }, 1500);
+        }
+    }
+    
+    function handleResize() {
+        if (!button) return;
+        
+        if (config.hideOnMobile && window.innerWidth <= 768) {
+            button.style.display = 'none';
+        } else {
+            button.style.display = 'flex';
+        }
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeButton);
+    } else {
+        initializeButton();
+    }
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
+})();
+</script>

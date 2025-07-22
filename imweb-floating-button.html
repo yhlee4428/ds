@@ -1,0 +1,157 @@
+<!-- 아임웹 HTML 위젯에 삽입할 코드 -->
+<style>
+/* 스크롤 따라다니는 고정 버튼 스타일 */
+.imweb-floating-btn {
+    position: fixed !important;
+    bottom: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #4A90E2, #357ABD);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+    cursor: pointer;
+    z-index: 99999 !important;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    color: white !important;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    outline: none;
+}
+
+.imweb-floating-btn:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 12px 35px rgba(74, 144, 226, 0.4);
+    background: linear-gradient(135deg, #357ABD, #2E6BA8);
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.imweb-floating-btn:active {
+    transform: translateY(-2px) !important;
+}
+
+/* 버튼 아이콘 */
+.imweb-floating-btn::before {
+    content: "🎯";
+    font-size: 24px;
+    margin-bottom: 2px;
+}
+
+/* 버튼 텍스트 */
+.imweb-floating-btn-text {
+    font-size: 10px;
+    line-height: 1.2;
+    margin-top: 2px;
+    color: white !important;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .imweb-floating-btn {
+        width: 70px !important;
+        height: 70px !important;
+        bottom: 15px !important;
+        right: 15px !important;
+        border-radius: 15px;
+        font-size: 11px;
+    }
+
+    .imweb-floating-btn::before {
+        font-size: 20px;
+    }
+
+    .imweb-floating-btn-text {
+        font-size: 9px;
+    }
+}
+
+/* 애니메이션 효과 */
+@keyframes imweb-pulse {
+    0% {
+        box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+    }
+    50% {
+        box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6);
+    }
+    100% {
+        box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+    }
+}
+
+.imweb-floating-btn.pulse {
+    animation: imweb-pulse 2s infinite;
+}
+</style>
+
+<!-- 고정 버튼 HTML -->
+<a href="javascript:void(0)" class="imweb-floating-btn" onclick="handleFloatingButtonClick()">
+    <div class="imweb-floating-btn-text">무료체험<br>신청하기</div>
+</a>
+
+<script>
+// 버튼 클릭 이벤트 처리 함수
+function handleFloatingButtonClick() {
+    // 여기에 원하는 동작을 추가하세요
+    
+    // 예시 1: 특정 페이지로 이동
+    // window.location.href = '/신청페이지';
+    
+    // 예시 2: 새 창에서 페이지 열기
+    // window.open('/신청페이지', '_blank');
+    
+    // 예시 3: 팝업 모달 표시 (아임웹 팝업 기능 사용)
+    // 아임웹의 팝업 ID를 알고 있다면:
+    // $('#팝업ID').modal('show');
+    
+    // 예시 4: 특정 섹션으로 스크롤
+    // document.querySelector('#신청섹션').scrollIntoView({behavior: 'smooth'});
+    
+    // 예시 5: 전화 걸기
+    // window.location.href = 'tel:010-0000-0000';
+    
+    // 현재는 알림창으로 테스트
+    alert('무료체험 신청 버튼이 클릭되었습니다!\n\n실제 사용 시에는 이 부분을 원하는 동작으로 수정하세요.');
+}
+
+// 스크롤 시 버튼 효과 (선택사항)
+(function() {
+    let scrollTimer = null;
+    window.addEventListener('scroll', function() {
+        const button = document.querySelector('.imweb-floating-btn');
+        if (button) {
+            // 스크롤 중일 때 버튼에 펄스 효과 추가
+            button.classList.add('pulse');
+            
+            // 스크롤이 멈추면 펄스 효과 제거
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(function() {
+                button.classList.remove('pulse');
+            }, 1000);
+        }
+    });
+
+    // 페이지 로드 시 버튼 애니메이션
+    window.addEventListener('load', function() {
+        const button = document.querySelector('.imweb-floating-btn');
+        if (button) {
+            button.style.opacity = '0';
+            button.style.transform = 'translateY(100px)';
+            
+            setTimeout(function() {
+                button.style.transition = 'all 0.5s ease';
+                button.style.opacity = '1';
+                button.style.transform = 'translateY(0)';
+            }, 500);
+        }
+    });
+})();
+</script>
