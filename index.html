@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -145,6 +146,123 @@
             color: #888;
             margin-top: 20px;
         }
+
+        /* 새로운 무료혜택 신청 버튼 스타일 */
+        .contact-btn {
+            position: fixed !important;
+            top: 50% !important;
+            right: 20px;
+            transform: translateY(-50%) !important;
+            width: 160px;
+            height: 160px;
+            background: linear-gradient(135deg, #FF6B35, #F7931E) !important;
+            border-radius: 15px !important;
+            box-shadow: 0 12px 35px rgba(255, 107, 53, 0.4) !important;
+            cursor: pointer !important;
+            z-index: 999999 !important;
+            transition: all 0.3s ease !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            color: #ffffff !important;
+            font-family: 'Noto Sans KR', sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            text-align: center !important;
+            border: none !important;
+            outline: none !important;
+            pointer-events: auto !important;
+            -webkit-tap-highlight-color: rgba(255, 107, 53, 0.3) !important;
+            -webkit-touch-callout: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-50%) translateX(-10px) scale(1.08) !important;
+            box-shadow: 0 18px 50px rgba(255, 107, 53, 0.6) !important;
+            background: linear-gradient(135deg, #FF5722, #E65100) !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+        }
+
+        .contact-btn:focus,
+        .contact-btn:visited {
+            color: #ffffff !important;
+            text-decoration: none !important;
+            outline: none !important;
+        }
+
+        .contact-icon {
+            font-size: 70px !important;
+            margin-bottom: 5px !important;
+            margin-top: -15px !important;
+            animation: bounce-icon 2s infinite !important;
+        }
+
+        .contact-text {
+            font-size: 24px !important;
+            line-height: 1.1 !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+            margin-top: -10px !important;
+        }
+
+        @keyframes bounce-icon {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-6px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        @media (max-width: 768px) {
+            .contact-btn {
+                width: 110px !important;
+                height: 110px !important;
+                right: 15px !important;
+                font-size: 15px !important;
+            }
+            
+            .contact-icon {
+                font-size: 40px !important;
+                margin-bottom: 2px !important;
+                margin-top: -5px !important;
+            }
+            
+            .contact-text {
+                font-size: 16px !important;
+                margin-top: -3px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-btn {
+                width: 95px !important;
+                height: 95px !important;
+                right: 10px !important;
+            }
+            
+            .contact-icon {
+                font-size: 36px !important;
+                margin-top: 0px !important;
+            }
+            
+            .contact-text {
+                font-size: 16px !important;
+                margin-top: -2px !important;
+            }
+        }
+
+        /* 기존 카카오톡 버튼과 충돌 방지 */
+        .kakao-talk-btn {
+            bottom: 30px !important;
+            right: 30px !important;
+            z-index: 999998 !important;
+        }
     </style>
 </head>
 
@@ -228,6 +346,12 @@
     </div>
     <!-- Contact Section End -->
 
+    <!-- 무료혜택 신청 버튼 -->
+    <div class="contact-btn" onclick="findAndScrollToContact(); return false;">
+        <div class="contact-icon">🎁</div>
+        <div class="contact-text">무료혜택<br>신청하기</div>
+    </div>
+
     <!-- Floating KakaoTalk Button -->
     <a href="#" id="floatingKakaoBtn" class="kakao-talk-btn">
         <i class="fas fa-comment"></i>
@@ -276,6 +400,82 @@
                 $('.kakao-talk-btn').addClass('show');
             } else {
                 $('.kakao-talk-btn').removeClass('show');
+            }
+        });
+
+        // 무료혜택 신청 버튼 기능
+        function findAndScrollToContact() {
+            console.log('버튼 클릭됨!'); // 디버깅용
+            
+            // 페이지 전체 높이 계산
+            var pageHeight = Math.max(
+                document.body.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.clientHeight,
+                document.documentElement.scrollHeight,
+                document.documentElement.offsetHeight
+            );
+            
+            // 화면 높이
+            var windowHeight = window.innerHeight;
+            
+            // 맨 아래에서 3칸 위 정도로 계산 (대략 300px 위)
+            var scrollPosition = pageHeight - windowHeight - 400;
+            
+            // 최소값 보정 (너무 위로 올라가지 않도록)
+            scrollPosition = Math.max(0, scrollPosition);
+            
+            console.log('페이지 높이:', pageHeight, '스크롤 위치:', scrollPosition);
+            
+            // 부드럽게 스크롤
+            window.scrollTo({
+                top: scrollPosition,
+                behavior: 'smooth'
+            });
+            
+            // 버튼 클릭 피드백
+            var btn = document.querySelector('.contact-btn');
+            if (btn) {
+                btn.style.transform = 'translateY(-50%) scale(0.9)';
+                setTimeout(function() {
+                    btn.style.transform = 'translateY(-50%)';
+                }, 200);
+            }
+        }
+
+        // 무료혜택 버튼 추가 이벤트 리스너 등록
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('페이지 로드 완료'); // 디버깅용
+            
+            // 버튼에 클릭 이벤트 등록 (onclick 외에 추가로)
+            var btn = document.querySelector('.contact-btn');
+            if (btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('addEventListener로 클릭 감지!');
+                    findAndScrollToContact();
+                });
+                
+                // 터치 이벤트도 추가 (모바일용)
+                btn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    console.log('터치 이벤트 감지!');
+                    findAndScrollToContact();
+                });
+            }
+        });
+
+        // 추가 안전장치: 윈도우 로드 후에도 이벤트 등록
+        window.addEventListener('load', function() {
+            var btn = document.querySelector('.contact-btn');
+            if (btn && !btn.hasAttribute('data-event-added')) {
+                btn.setAttribute('data-event-added', 'true');
+                btn.onclick = function() {
+                    console.log('onclick 직접 등록으로 클릭 감지!');
+                    findAndScrollToContact();
+                    return false;
+                };
             }
         });
     </script>
