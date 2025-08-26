@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>ESBookMall - 전자책 전문몰</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="전자책, 무료전자책, 카이바, 유니버" name="keywords">
+    <meta content="100% 무료 전자책 제공" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 0;
+            color: white;
+        }
+        
+        .card-custom {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border: none;
+        }
+        
+        .card-custom:hover {
+            transform: translateY(-5px);
+        }
+        
+        .book-icon {
+            font-size: 4rem;
+            color: #2c5aa0;
+            margin-bottom: 20px;
+        }
+        
+        .contact-section {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+        }
+        
+        .kakao-talk-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #fee500;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 1000;
+            text-decoration: none;
+            color: #3a1d1d;
+        }
+        
+        .kakao-talk-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+            color: #3a1d1d;
+            text-decoration: none;
+        }
+        
+        .kakao-talk-btn i {
+            font-size: 24px;
+        }
+        
+        .kakao-talk-text {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background-color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .kakao-talk-btn:hover .kakao-talk-text {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .free-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+        }
+        
+        .thunder-icon {
+            color: #ffd700;
+            font-size: 2rem;
+            margin: 0 10px;
+        }
+        
+        .gift-icon {
+            font-size: 3rem;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+
+        .contact-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c5aa0;
+            margin-bottom: 40px;
+        }
+
+        .contact-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .contact-note {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        /* 새로운 무료혜택 신청 버튼 스타일 */
+        .contact-btn {
+            position: fixed !important;
+            top: 50% !important;
+            right: 20px;
+            transform: translateY(-50%) !important;
+            width: 160px;
+            height: 160px;
+            background: linear-gradient(135deg, #FF6B35, #F7931E) !important;
+            border-radius: 15px !important;
+            box-shadow: 0 12px 35px rgba(255, 107, 53, 0.4) !important;
+            cursor: pointer !important;
+            z-index: 999999 !important;
+            transition: all 0.3s ease !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            color: #ffffff !important;
+            font-family: 'Noto Sans KR', sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            text-align: center !important;
+            border: none !important;
+            outline: none !important;
+            pointer-events: auto !important;
+            -webkit-tap-highlight-color: rgba(255, 107, 53, 0.3) !important;
+            -webkit-touch-callout: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-50%) translateX(-10px) scale(1.08) !important;
+            box-shadow: 0 18px 50px rgba(255, 107, 53, 0.6) !important;
+            background: linear-gradient(135deg, #FF5722, #E65100) !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+        }
+
+        .contact-btn:focus,
+        .contact-btn:visited {
+            color: #ffffff !important;
+            text-decoration: none !important;
+            outline: none !important;
+        }
+
+        .contact-icon {
+            font-size: 70px !important;
+            margin-bottom: 5px !important;
+            margin-top: -15px !important;
+            animation: bounce-icon 2s infinite !important;
+        }
+
+        .contact-text {
+            font-size: 24px !important;
+            line-height: 1.1 !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+            margin-top: -10px !important;
+        }
+
+        @keyframes bounce-icon {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-6px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        @media (max-width: 768px) {
+            .contact-btn {
+                width: 110px !important;
+                height: 110px !important;
+                right: 15px !important;
+                font-size: 15px !important;
+            }
+            
+            .contact-icon {
+                font-size: 40px !important;
+                margin-bottom: 2px !important;
+                margin-top: -5px !important;
+            }
+            
+            .contact-text {
+                font-size: 16px !important;
+                margin-top: -3px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-btn {
+                width: 95px !important;
+                height: 95px !important;
+                right: 10px !important;
+            }
+            
+            .contact-icon {
+                font-size: 36px !important;
+                margin-top: 0px !important;
+            }
+            
+            .contact-text {
+                font-size: 16px !important;
+                margin-top: -2px !important;
+            }
+        }
+
+        /* 기존 카카오톡 버튼과 충돌 방지 */
+        .kakao-talk-btn {
+            bottom: 30px !important;
+            right: 30px !important;
+            z-index: 999998 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section Start -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card card-custom h-100 p-4 text-center bg-white">
+                        <div class="card-body">
+                            <i class="fas fa-book book-icon"></i>
+                            <h3 class="card-title text-primary mb-3">100% 무료 전자책 제공</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card card-custom h-100 p-4 bg-white">
+                        <div class="card-body text-center">
+                            <div class="d-flex align-items-center justify-content-center mb-3">
+                                <span class="text-primary font-weight-bold" style="font-size: 1.5rem;">선착순 300명 가입비 유니버 전액 무료</span>
+                                <i class="fas fa-bolt thunder-icon"></i>
+                            </div>
+                            <p class="text-muted">(이후 유료 회원가입 시 손실이 날 경우 50% 할월)</p>
+                            <div class="text-right">
+                                <i class="fas fa-gift gift-icon"></i>
+                                <div class="mt-2">
+                                    <span class="btn btn-warning font-weight-bold">무료혜택<br>신청하기</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p class="text-white">※ 조기 종료될 수 있으니 서둘러 주세요.</p>
+                    <p class="text-white"><strong>100% 무료 혜택으로, 유료 결제 및 추가 비용이 없습니다.</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero Section End -->
+
+    <!-- Contact Section Start -->
+    <div class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="contact-title text-center">문의하기</h2>
+                    <hr style="width: 100px; height: 3px; background-color: #2c5aa0; margin: 0 auto 40px;">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <p class="contact-subtitle">궁금한 점이 있으시면 언제든지 문의해주세요.</p>
+                    <p class="contact-subtitle">카카오톡으로 빠르고 편리하게 상담받으실 수 있습니다.</p>
+                    
+                    <!-- 운영상태 표시 -->
+                    <div class="operating-status mb-3" style="font-size: 1.1rem; font-weight: 600;">
+                        <!-- JavaScript로 동적 업데이트 -->
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="#" id="kakaoChannelBtn" class="btn btn-warning btn-lg px-5 py-3">
+                            <i class="fab fa-comment-dots mr-2"></i>
+                            카카오톡 상담하기
+                        </a>
+                    </div>
+                    
+                    <p class="contact-note">※ 평일 09:00 ~ 18:00 운영 (주말 및 공휴일 휴무)</p>
+                    
+                    <!-- 추가 안내사항 -->
+                    <div class="mt-4 p-3" style="background-color: #fff3cd; border-radius: 10px; font-size: 0.9rem;">
+                        <i class="fas fa-info-circle text-warning mr-2"></i>
+                        운영시간 외에도 메시지를 남겨주시면 다음 영업일에 답변드립니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact Section End -->
+
+    <!-- 무료혜택 신청 버튼 -->
+    <div class="contact-btn" onclick="findAndScrollToContact(); return false;">
+        <div class="contact-icon">🎁</div>
+        <div class="contact-text">무료혜택<br>신청하기</div>
+    </div>
+
+    <!-- Floating KakaoTalk Button -->
+    <a href="#" id="floatingKakaoBtn" class="kakao-talk-btn">
+        <i class="fas fa-comment"></i>
+        <div class="kakao-talk-text">카카오톡 상담</div>
+    </a>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    
+    <!-- Kakao Configuration -->
+    <script src="js/kakao-config.js"></script>
+
+    <script>
+        // 이벤트 리스너 추가
+        document.addEventListener('DOMContentLoaded', function() {
+            // 플로팅 버튼 클릭 이벤트
+            const floatingBtn = document.getElementById('floatingKakaoBtn');
+            if (floatingBtn) {
+                floatingBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openKakaoChannel();
+                });
+            }
+
+            // 상담하기 버튼 클릭 이벤트
+            const channelBtn = document.getElementById('kakaoChannelBtn');
+            if (channelBtn) {
+                channelBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openKakaoChannel();
+                });
+            }
+        });
+
+        // 스크롤 시 플로팅 버튼 애니메이션
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 100) {
+                $('.kakao-talk-btn').addClass('show');
+            } else {
+                $('.kakao-talk-btn').removeClass('show');
+            }
+        });
+
+        // 무료혜택 신청 버튼 기능
+        function findAndScrollToContact() {
+            console.log('버튼 클릭됨!'); // 디버깅용
+            
+            // 페이지 전체 높이 계산
+            var pageHeight = Math.max(
+                document.body.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.clientHeight,
+                document.documentElement.scrollHeight,
+                document.documentElement.offsetHeight
+            );
+            
+            // 화면 높이
+            var windowHeight = window.innerHeight;
+            
+            // 맨 아래에서 3칸 위 정도로 계산 (대략 300px 위)
+            var scrollPosition = pageHeight - windowHeight - 400;
+            
+            // 최소값 보정 (너무 위로 올라가지 않도록)
+            scrollPosition = Math.max(0, scrollPosition);
+            
+            console.log('페이지 높이:', pageHeight, '스크롤 위치:', scrollPosition);
+            
+            // 부드럽게 스크롤
+            window.scrollTo({
+                top: scrollPosition,
+                behavior: 'smooth'
+            });
+            
+            // 버튼 클릭 피드백
+            var btn = document.querySelector('.contact-btn');
+            if (btn) {
+                btn.style.transform = 'translateY(-50%) scale(0.9)';
+                setTimeout(function() {
+                    btn.style.transform = 'translateY(-50%)';
+                }, 200);
+            }
+        }
+
+        // 무료혜택 버튼 추가 이벤트 리스너 등록
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('페이지 로드 완료'); // 디버깅용
+            
+            // 버튼에 클릭 이벤트 등록 (onclick 외에 추가로)
+            var btn = document.querySelector('.contact-btn');
+            if (btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('addEventListener로 클릭 감지!');
+                    findAndScrollToContact();
+                });
+                
+                // 터치 이벤트도 추가 (모바일용)
+                btn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    console.log('터치 이벤트 감지!');
+                    findAndScrollToContact();
+                });
+            }
+        });
+
+        // 추가 안전장치: 윈도우 로드 후에도 이벤트 등록
+        window.addEventListener('load', function() {
+            var btn = document.querySelector('.contact-btn');
+            if (btn && !btn.hasAttribute('data-event-added')) {
+                btn.setAttribute('data-event-added', 'true');
+                btn.onclick = function() {
+                    console.log('onclick 직접 등록으로 클릭 감지!');
+                    findAndScrollToContact();
+                    return false;
+                };
+            }
+        });
+    </script>
+</body>
+</html>
